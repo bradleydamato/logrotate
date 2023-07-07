@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.14
 
 ENV CRON_SCHEDULE='0 * * * *' \
     LOGROTATE_SIZE='100M' \
@@ -9,6 +9,10 @@ ENV CRON_SCHEDULE='0 * * * *' \
 RUN apk --no-cache add logrotate tini gettext libintl \
     && mkdir -p /logs \
     && mkdir -p /etc/logrotate.d
+
+RUN apk update && apk upgrade musl musl-utils \
+    && addgroup -g 1000 node \
+    && adduser -D -u 1000 -G node node
 
 COPY logrotate.tpl.conf /logrotate.tpl.conf
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
