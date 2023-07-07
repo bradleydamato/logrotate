@@ -10,6 +10,8 @@ RUN apk --no-cache add logrotate tini gettext libintl \
     && mkdir -p /logs \
     && mkdir -p /etc/logrotate.d
 
+RUN apk update && apk upgrade musl musl-utils
+
 COPY logrotate.tpl.conf /logrotate.tpl.conf
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
